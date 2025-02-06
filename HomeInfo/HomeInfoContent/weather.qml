@@ -1,0 +1,10 @@
+
+
+import QtQuick
+import QtQuick.Controls
+import HomeInfo
+
+Rectangle {
+    width:
+
+}
