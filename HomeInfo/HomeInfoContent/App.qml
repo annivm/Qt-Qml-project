@@ -5,15 +5,13 @@ import QtQuick
 import HomeInfo
 
 Window {
-    width: mainScreen.width
-    height: mainScreen.height
+    width: 1400
+    height: 900
 
     visible: true
     title: "HomeInfo"
 
-    Screen01 {
-        id: mainScreen
-    }
+
 
 }
 
