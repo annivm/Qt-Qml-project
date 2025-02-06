@@ -12,6 +12,27 @@ Window {
     title: "HomeInfo"
 
 
+    Calendar {
+        anchors.left: parent.left;
+        anchors.top: parent.top;
+    }
+
+    JokeOfTheDay {
+        anchors.left: parent.left;
+        anchors.bottom: parent.bottom;
+    }
+
+    Weather {
+        anchors.right: parent.right;
+        anchors.top: parent.top;
+    }
+
+    Timetable {
+        anchors.right: parent.right;
+        anchors.bottom: parent.bottom;
+    }
+
+
 
 }
 
