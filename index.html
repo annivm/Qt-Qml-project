@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIRI Stop Monitoring</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pysäkkiaikataulu</h1>
+    <button onclick="haePysakkidata()">Hae tiedot</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Linja</th>
+                <th>Kohde</th>
+                <th>Saapumisaika</th>
+                <th>Saapuu (min)</th>
+            </tr>
+        </thead>
+        <tbody id="aikataulu"></tbody>
+    </table>
+
+    <script>
+        async function haePysakkidata() {
+            const url = "https://data.waltti.fi/tampere/api/sirirealtime/v1.3/ws";
+            const clientID = "0672070138953547";  // Vaihda omaan Client ID:hen
+            const clientSecret = "nQFQxWn1u1ETwqgpnJJV91fnMwkKKaC0";  // 🔹 Vaihda omaan Client Secret:iin
+            const encodedCredentials = btoa(`${clientID}:${clientSecret}`);
+
+            const xmlData = `<?xml version="1.0" encoding="UTF-8"?>
+                <Siri xmlns="http://www.siri.org.uk/siri" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.3">
+                    <ServiceRequest>
+                        <StopMonitoringRequest version="1.3">
+                            <PreviewInterval>PT30M00S</PreviewInterval>
+                            <MonitoringRef>3549</MonitoringRef>
+                        </StopMonitoringRequest>
+                    </ServiceRequest>
+                </Siri>`;
+
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/xml",
+                        "Authorization": `Basic ${encodedCredentials}`
+                    },
+                    body: xmlData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Virhe: ${response.status}`);
+                }
+
+                const text = await response.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(text, "text/xml");
+
+                // 🔹 Hakee MonitoredStopVisit-elementit
+                const visits = xmlDoc.getElementsByTagName("MonitoredStopVisit");
+                const aikatauluElem = document.getElementById("aikataulu");
+                aikatauluElem.innerHTML = "";  // Tyhjennä aiemmat tulokset
+
+                const nyt = new Date();
+
+                // 🔹 Käy läpi max 5 ensimmäistä saapuvaa linjaa
+                for (let i = 0; i < Math.min(5, visits.length); i++) {
+                    const visit = visits[i];
+
+                    const linja = visit.getElementsByTagName("LineRef")[0].textContent;
+                    const kohde = visit.getElementsByTagName("DestinationName")[0].textContent;
+                    const saapumisaika = visit.getElementsByTagName("ExpectedArrivalTime")[0].textContent;
+
+                    // 🔹 Muuntaa ajan minuuteiksi
+                    const saapumisAika = new Date(saapumisaika);
+                    //const aikaEro = Math.round((saapumisAika - nyt) / 60000); // Minuutteina
+                    const aikaEro = Math.round((saapumisAika.getTime() - nyt.getTime()) / 60000);
+
+                    // 🔹 Lisää tiedot taulukkoon
+                    const row = `<tr>
+                        <td>${linja}</td>
+                        <td>${kohde}</td>
+                        <td>${saapumisAika.toLocaleTimeString("fi-FI")}</td>
+                        <td>${aikaEro} min</td>
+                    </tr>`;
+                    aikatauluElem.innerHTML += row;
+                }
+            } catch (error) {
+                alert("Virhe haettaessa tietoja: " + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
+
