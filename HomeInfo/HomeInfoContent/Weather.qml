@@ -11,7 +11,7 @@ Rectangle {
     // propertyina city, temperature ja windSpeed
     // nämä haetaan palvelimelta
 
-    property string city: "Haetaan säätietoja..."
+    property string city: "sydney"
     property double temperature: 0
     property double windSpeed: 0
     property string description: ""
@@ -19,31 +19,69 @@ Rectangle {
     property string iconSource: "https://openweathermap.org/img/wn/" + icon + "@2x.png"
 
 
-
-    Image{
-        id: iconImage
-        height: 400
-        width: 400
-        source: iconSource
-        anchors.right: weather.Center
-        anchors.verticalCenter: weather.verticalCenter
-
-    }
-    Text{
-        id: temp
-        text: temperature + "C"
-        font.pixelSize: 60
-        font.bold: true
-        font.family: "Charcoal NY"
-        anchors.left: iconImage.right
-        anchors.verticalCenter: weather.verticalCenter
+    Timer{
+        id:updateTimer
+        interval: 600000 // 10min
+        running: true
+        repeat:true
+        onTriggered: fetchWeatherData()
     }
 
-    Text{
-        text: description
-        font.pixelSize: 30
-        anchors.left: iconImage.right
-        anchors.top: temp.bottom
+    Rectangle{
+        id:leftWeather
+        anchors.left: weather.left
+        width: 400;
+        height: 500;
+        color: "transparent"
+
+        Image{
+            id: iconImage
+            height: 450
+            width: 450
+            source: iconSource
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+
+        }
+    }
+    Rectangle{
+
+        id:rightWeather;
+        anchors.left: leftWeather.right;
+        width: 400;
+        height: 500;
+        color: "transparent"
+
+        Rectangle{
+            id:topRight
+            anchors.top: rightWeather.top
+            width: 400
+            height: 250
+            color: "transparent"
+            Text{
+                id: temp
+                text: temperature.toFixed(0) + "°C"
+                font.pixelSize: 90
+                font.bold: true
+                font.family: "Charcoal NY"
+                anchors.bottom: parent.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+                bottomPadding: 20
+            }
+        }
+        Rectangle{
+            id:bottomRight
+            anchors.bottom: rightWeather.bottom
+            width: 400
+            height: 250
+            color: "transparent"
+            Text{
+                text: description
+                font.pixelSize: 45
+                anchors.horizontalCenter: parent.horizontalCenter
+                topPadding: 10
+            }
+        }
     }
 
 
@@ -55,7 +93,7 @@ Rectangle {
 
     // javaScript-funktio, jolla haetaan palvelimelta tiedot
     function fetchWeatherData(){
-        var url = "https://api.openweathermap.org/data/2.5/weather?q=Tuusula&units=metric&APPID=716d6d488dbbca53e5b76e3788ffa23b"
+        var url = "https://api.openweathermap.org/data/2.5/weather?q=" + city +"&units=metric&APPID=716d6d488dbbca53e5b76e3788ffa23b"
         const httpRequest = new XMLHttpRequest(); //luokka
         httpRequest.open("GET", url) // luodaan pyyntö, parametrina metodi ja url
 
@@ -68,11 +106,11 @@ Rectangle {
 
                     // päivitetään propertyihin haetut arvot
                     const response = JSON.parse(httpRequest.responseText) // muutetaan data JSON objektiksi
-                    city = response.name
                     description = response.weather[0].description
                     temperature = response.main.temp
                     windSpeed = response.wind.speed
                     icon = response.weather[0].icon
+
                 }
                 else{
                     // Error fetching data
