@@ -7,4 +7,6 @@ Rectangle {
     width: 800;
     height: 400;
     color: "Green";
+
+
 }
