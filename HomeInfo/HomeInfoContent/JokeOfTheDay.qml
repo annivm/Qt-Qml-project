@@ -6,7 +6,7 @@ import QtQuick.LocalStorage 2.0
 Rectangle {
     id: jokeoftheday;
     width: 600;
-    height: 200;
+    height: 300;
     color: "Transparent"
 
 
@@ -16,16 +16,17 @@ Rectangle {
 
     Rectangle{
         id: topJoke
-        width: 600
+        width: 500
         height: 100
         color: "Transparent"
-        anchors.top: parent.top
+        anchors.verticalCenter: parent.verticalCenter
         Text{
             id: jokeText
             text: joke
             width: parent.width - 40
+            rightPadding: 20
             fontSizeMode: Text.HorizontalFit
-            font.pixelSize: 35
+            font.pixelSize: 40
             font.bold: true
             font.family: "Tahoma"
             anchors.horizontalCenter: parent.horizontalCenter
@@ -34,7 +35,7 @@ Rectangle {
     }
     Rectangle{
         id:bottomJoke
-        width: 600
+        width: 500
         height: 100
         color: "Transparent"
         anchors.bottom: parent.bottom
@@ -46,6 +47,7 @@ Rectangle {
             font.pixelSize: 20
             font.family: "Tahoma"
             anchors.centerIn: parent
+            bottomPadding: 30
 
         }
     }

@@ -5,7 +5,7 @@ import QtQuick.Effects
 Rectangle {
     id: calendar
     width: 600;
-    height: 700;
+    height: 600;
     color: "Transparent"
 
     property date currentTime: new Date();

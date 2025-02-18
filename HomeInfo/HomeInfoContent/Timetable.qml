@@ -11,17 +11,17 @@ Rectangle {
 
     property string line: "";
     property string destinationName: "";
-    property string arrival: "";
+    property var arrival: null;
 
 
     property string line1: "";
     property string destinationName1: "";
-    property string arrival1: "";
+    property var arrival1: null;
 
 
     property string line2: "";
     property string destinationName2: "";
-    property string arrival2: "";
+    property var arrival2: null;
 
 
     Timer {
@@ -36,13 +36,15 @@ Rectangle {
         Text {
             text: "Nuijatie - 3549"
             font.pixelSize: 60
+            font.family: "Tahoma"
         }
 
         Row {
+            spacing: 20
             Text {
                 text: line
                 font.pixelSize: 40
-                width: 100
+                width: 90
             }
             Text {
                 text: destinationName
@@ -57,17 +59,18 @@ Rectangle {
 
             }
             Text {
-                text: Qt.formatTime(arrival, "mm") - Qt.formatTime(currentTime, "mm") + " min"
+                text: arrival ? Math.floor((arrival - currentTime) / 60000) + " min" : ""
                 font.pixelSize: 40
-                width: 200
+                width: 190
             }
 
         }
         Row {
+            spacing: 20
             Text {
                 text: line1
                 font.pixelSize: 40
-                width: 100
+                width: 90
             }
             Text {
                 text: destinationName1
@@ -81,17 +84,18 @@ Rectangle {
                 width: 200
             }
             Text {
-                text: Qt.formatTime(arrival1, "mm") - Qt.formatTime(currentTime, "mm") + " min"
+                text: arrival1 ? Math.floor((arrival1 - currentTime) / 60000) + " min" : ""
                 font.pixelSize: 40
-                width: 200
+                width: 190
             }
 
         }
         Row {
+            spacing: 20
             Text {
                 text: line2
                 font.pixelSize: 40
-                width: 100
+                width: 90
             }
             Text {
                 text: destinationName2
@@ -105,9 +109,9 @@ Rectangle {
                 width: 200
             }
             Text {
-                text: Qt.formatTime(arrival2, "mm") - Qt.formatTime(currentTime, "mm") + " min"
+                text: arrival2 ? (Math.floor((arrival2 - currentTime) / 60000)) + " min" : ""
                 font.pixelSize: 40
-                width: 200
+                width: 190
             }
 
         }
@@ -140,7 +144,7 @@ Rectangle {
                     } else {
                         destinationName = "Keskustori"
                     }
-                    arrival = response.body[3549][0].call.expectedArrivalTime
+                    arrival = new Date(response.body[3549][0].call.expectedArrivalTime)
 
                     line1 = response.body[3549][1].lineRef
                     destinationName1 = response.body[3549][1].destinationShortName
@@ -151,18 +155,21 @@ Rectangle {
                     } else {
                         destinationName1 = "Keskustori"
                     }
-                    arrival1 = response.body[3549][1].call.expectedArrivalTime
+                    arrival1 = new Date(response.body[3549][1].call.expectedArrivalTime)
 
-                    line2 = response.body[3549][2].lineRef
-                    destinationName2 = response.body[3549][2].destinationShortName
-                    if(destinationName2 === "2017") {
-                        destinationName2 =  "Tahmela"
-                    } else if (destinationName2 === "1005") {
-                        destinationName2 = "Hiedanranta"
-                    } else {
-                        destinationName2 = "Keskustori"
+                    if (response.body[3549].length > 2) {
+                        line2 = response.body[3549][2].lineRef
+                        destinationName2 = response.body[3549][2].destinationShortName
+                        if(destinationName2 === "2017") {
+                            destinationName2 =  "Tahmela"
+                        } else if (destinationName2 === "1005") {
+                            destinationName2 = "Hiedanranta"
+                        } else {
+                            destinationName2 = "Keskustori"
+                        }
+                        arrival2 = new Date(response.body[3549][2].call.expectedArrivalTime)
                     }
-                    arrival2 = response.body[3549][2].call.expectedArrivalTime
+
 
                 }
 
