@@ -9,6 +9,7 @@ Rectangle {
     color: "Blue";
 
     property date currentTime: new Date();
+    property var nameday: [];
 
     Timer {
            interval: 100
@@ -20,33 +21,41 @@ Rectangle {
     Column {
         anchors.horizontalCenter: parent.horizontalCenter
         Text {
-            font.pixelSize: 60
+            topPadding: 80
+            font.pixelSize: 160
             font.bold: true
-            font.family: "Trebuchet MS"
+            font.family: "Tahoma"
 
             color: "black"
             text: Qt.formatTime(currentTime, "hh:mm")
         }
 
         Text {
-            font.pixelSize: 30
-            font.family: "Consolas"
+            font.pixelSize: 90
+            font.family: "Tahoma"
             color: "black"
             text: Qt.formatDate(currentTime, "dddd")
         }
 
         Text {
-            font.pixelSize: 40
+            font.pixelSize: 80
             color: "black"
             font.family: "Tahoma"
             text: Qt.formatDate(currentTime, "d. MMMM")
         }
 
         Text {
-            text: "Todays namedays: "
+            topPadding: 10
+            font.pixelSize: 30
+            color: "black"
+            font.family: "Tahoma"
+            text: "Todays namedays: " + nameday
         }
 
     }
+
+
+    Component.onCompleted: fetchNameDay()
 
     function fetchNameDay() {
         const url = "https://nameday.abalin.net/api/V1/today";
@@ -61,14 +70,15 @@ Rectangle {
                 }
                 else {
                     // Error fetching data (ilmoita käyttöliittymälle)
-                    city = "Virhe latauksessa..."
+                    nameday = "Error..."
                 }
             }
-
 
         }
         httpRequest.send(); // lähetetään pyyntö
     }
+
+
 
 
 }
