@@ -25,7 +25,7 @@ Rectangle {
             fontSizeMode: Text.HorizontalFit
             font.pixelSize: 35
             font.bold: true
-            font.family: "Charcoal NY"
+            font.family: "Tahoma"
             anchors.horizontalCenter: parent.horizontalCenter
             topPadding: 60
         }
@@ -40,7 +40,7 @@ Rectangle {
             text: punchline
             fontSizeMode: Text.Fit
             font.pixelSize: 20
-            font.family: "Charcoal NY"
+            font.family: "Tahoma"
             anchors.centerIn: parent
 
         }

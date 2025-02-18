@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Effects
 
 
 Rectangle {
@@ -8,10 +9,11 @@ Rectangle {
     height: 500;
     color: "Yellow";
 
+
     // propertyina city, temperature ja windSpeed
     // nämä haetaan palvelimelta
 
-    property string city: "sydney"
+    property string city: "tampere"
     property double temperature: 0
     property double windSpeed: 0
     property string description: ""
@@ -41,7 +43,15 @@ Rectangle {
             source: iconSource
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
-
+        }
+        MultiEffect {
+            source: iconImage
+            anchors.fill: iconImage
+            shadowBlur: 1.7
+            shadowEnabled: true
+            shadowColor: "black"
+            shadowVerticalOffset: 15
+            shadowHorizontalOffset: 11
         }
     }
     Rectangle{
@@ -52,6 +62,7 @@ Rectangle {
         height: 500;
         color: "transparent"
 
+
         Rectangle{
             id:topRight
             anchors.top: rightWeather.top
@@ -61,12 +72,22 @@ Rectangle {
             Text{
                 id: temp
                 text: temperature.toFixed(0) + "°C"
-                font.pixelSize: 90
+                font.pixelSize: 130
                 font.bold: true
-                font.family: "Charcoal NY"
+                font.family: "Tahoma"
                 anchors.bottom: parent.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
                 bottomPadding: 20
+                rightPadding: 30
+            }
+            MultiEffect {
+                source: temp
+                anchors.fill: temp
+                shadowBlur: 1.7
+                shadowEnabled: true
+                shadowColor: "black"
+                shadowVerticalOffset: 5
+                shadowHorizontalOffset: 8
             }
         }
         Rectangle{
@@ -76,10 +97,22 @@ Rectangle {
             height: 250
             color: "transparent"
             Text{
+                id: descText
                 text: description
-                font.pixelSize: 45
+                font.pixelSize: 60
+                font.family: "Tahoma"
                 anchors.horizontalCenter: parent.horizontalCenter
                 topPadding: 10
+                rightPadding: 30
+            }
+            MultiEffect {
+                source: descText
+                anchors.fill: descText
+                shadowBlur: 1.7
+                shadowEnabled: true
+                shadowColor: "black"
+                shadowVerticalOffset: 5
+                shadowHorizontalOffset: 8
             }
         }
     }
@@ -89,7 +122,10 @@ Rectangle {
 
 
     // Haetaan säätiedot, kun komponentti on näytöllä
-    Component.onCompleted: fetchWeatherData()
+    Component.onCompleted:{
+        fetchWeatherData()
+    }
+
 
     // javaScript-funktio, jolla haetaan palvelimelta tiedot
     function fetchWeatherData(){
@@ -114,13 +150,16 @@ Rectangle {
                 }
                 else{
                     // Error fetching data
-                    city = "Virhe latauksessa"
+                    descText.font.pixelSize = 40
+                    description = "Error fetching data"
+                    temp.text = "--"
                 }
             }
         }
 
         httpRequest.send() // lähetetään pyyntö
     }
+
 
 }
 
