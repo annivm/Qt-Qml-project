@@ -1,12 +1,12 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Effects
 
 Rectangle {
     id: calendar
-
     width: 600;
     height: 700;
-    color: "Blue";
+    color: "Transparent"
 
     property date currentTime: new Date();
     property var nameday: [];

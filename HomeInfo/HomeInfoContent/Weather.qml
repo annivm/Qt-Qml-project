@@ -7,7 +7,8 @@ Rectangle {
     id: weather;
     width: 800;
     height: 500;
-    color: "Yellow";
+    color: "Transparent"
+
 
 
     // propertyina city, temperature ja windSpeed
@@ -51,7 +52,7 @@ Rectangle {
             shadowEnabled: true
             shadowColor: "black"
             shadowVerticalOffset: 15
-            shadowHorizontalOffset: 11
+            shadowHorizontalOffset: 10
         }
     }
     Rectangle{
@@ -83,11 +84,11 @@ Rectangle {
             MultiEffect {
                 source: temp
                 anchors.fill: temp
-                shadowBlur: 1.7
+                shadowBlur: 1.5
                 shadowEnabled: true
                 shadowColor: "black"
-                shadowVerticalOffset: 5
-                shadowHorizontalOffset: 8
+                shadowVerticalOffset: 3
+                shadowHorizontalOffset: 4
             }
         }
         Rectangle{
@@ -108,11 +109,11 @@ Rectangle {
             MultiEffect {
                 source: descText
                 anchors.fill: descText
-                shadowBlur: 1.7
+                shadowBlur: 1.5
                 shadowEnabled: true
                 shadowColor: "black"
-                shadowVerticalOffset: 5
-                shadowHorizontalOffset: 8
+                shadowVerticalOffset: 2
+                shadowHorizontalOffset: 3
             }
         }
     }

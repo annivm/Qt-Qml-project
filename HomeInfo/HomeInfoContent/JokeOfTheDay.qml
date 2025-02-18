@@ -7,7 +7,8 @@ Rectangle {
     id: jokeoftheday;
     width: 600;
     height: 200;
-    color: "Red";
+    color: "Transparent"
+
 
     property string joke: "";
     property string punchline: "";
@@ -17,6 +18,7 @@ Rectangle {
         id: topJoke
         width: 600
         height: 100
+        color: "Transparent"
         anchors.top: parent.top
         Text{
             id: jokeText
@@ -34,10 +36,12 @@ Rectangle {
         id:bottomJoke
         width: 600
         height: 100
+        color: "Transparent"
         anchors.bottom: parent.bottom
         Text {
             id: punchlineText
             text: punchline
+            width: parent.width - 40
             fontSizeMode: Text.Fit
             font.pixelSize: 20
             font.family: "Tahoma"
@@ -78,6 +82,3 @@ Rectangle {
 
 
 }
-
-
-// https://official-joke-api.appspot.com/random_joke
