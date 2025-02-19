@@ -14,12 +14,11 @@ Rectangle {
     property string punchline: "";
 
 
-    Rectangle{
+    Column{
         id: topJoke
         width: 500
         height: 100
-        color: "Transparent"
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
         Text{
             id: jokeText
             text: joke
@@ -32,23 +31,17 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
             topPadding: 60
         }
-    }
-    Rectangle{
-        id:bottomJoke
-        width: 500
-        height: 100
-        color: "Transparent"
-        anchors.bottom: parent.bottom
+
+
         Text {
             id: punchlineText
             text: punchline
             width: parent.width - 40
             fontSizeMode: Text.Fit
-            font.pixelSize: 20
+            font.pixelSize: jokeText.font.pixelSize - 20
             font.family: "Tahoma"
-            anchors.centerIn: parent
-            bottomPadding: 30
-
+            anchors.horizontalCenter: parent.horizontalCenter
+            topPadding: 30
         }
     }
 
