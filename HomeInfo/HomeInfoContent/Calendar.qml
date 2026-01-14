@@ -58,7 +58,7 @@ Rectangle {
     Component.onCompleted: fetchNameDay()
 
     function fetchNameDay() {
-        const url = "https://nameday.abalin.net/api/V1/today";
+        const url = "https://nameday.abalin.net/api/V2/today/Helsinki";
         const httpRequest = new XMLHttpRequest();
         httpRequest.open("GET", url); // luodaan pyyntö GET requestille
         // Toteutetaan callbackit valmistuneelle resurssille
@@ -66,7 +66,7 @@ Rectangle {
             if( httpRequest.readyState === XMLHttpRequest.DONE ) { // request valmis
                 if( httpRequest.status === 200 ) { // request ok, pitäisi olla data
                     const response = JSON.parse( httpRequest.responseText );
-                    nameday = response.nameday.fi;
+                    nameday = response.data.fi;
                 }
                 else {
                     // Error fetching data (ilmoita käyttöliittymälle)
@@ -82,3 +82,4 @@ Rectangle {
 
 
 }
+
